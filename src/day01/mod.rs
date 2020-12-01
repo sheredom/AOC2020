@@ -1,21 +1,16 @@
-fn day01_part01(str: &str) {
-    let iter = str.split_whitespace();
-
-    for (index, i_string) in iter.clone().enumerate() {
-        let i = i_string.parse::<i32>().unwrap();
-
+#[exec_time]
+fn day01_part01(slice: &[i32]) {
+    for (index, i) in slice.iter().enumerate() {
         // Skip i's that are already to big!
-        if i > 2020 {
+        if *i > 2020 {
             continue;
         }
 
-        for (kndex, k_string) in iter.clone().enumerate() {
+        for (kndex, k) in slice.iter().enumerate() {
             // Skip indices that we will already have compared.
             if kndex <= index {
                 continue;
             }
-
-            let k = k_string.parse::<i32>().unwrap();
 
             if (i + k) == 2020 {
                 println!(
@@ -32,37 +27,30 @@ fn day01_part01(str: &str) {
     }
 }
 
-fn day01_part02(str: &str) {
-    let iter = str.split_whitespace();
-
-    for (index, i_string) in iter.clone().enumerate() {
-        let i = i_string.parse::<i32>().unwrap();
-
+#[exec_time]
+fn day01_part02(slice: &[i32]) {
+    for (index, i) in slice.iter().enumerate() {
         // Skip i's that are already to big!
-        if i > 2020 {
+        if *i > 2020 {
             continue;
         }
 
         // Skip indices that we will already have compared.
-        for (kndex, k_string) in iter.clone().enumerate() {
+        for (kndex, k) in slice.iter().enumerate() {
             if kndex <= index {
                 continue;
             }
-
-            let k = k_string.parse::<i32>().unwrap();
 
             // Skip i + k's that are already to big!
             if (i + k) > 2020 {
                 continue;
             }
 
-            for (mndex, m_string) in iter.clone().enumerate() {
+            for (mndex, m) in slice.iter().enumerate() {
                 // Skip indices that we will already have compared.
                 if mndex <= kndex {
                     continue;
                 }
-
-                let m = m_string.parse::<i32>().unwrap();
 
                 if (i + k + m) == 2020 {
                     println!(
@@ -86,6 +74,11 @@ pub fn day01() {
     let input = include_bytes!("input");
     let string = String::from_utf8(input.to_vec()).unwrap();
 
-    day01_part01(&string);
-    day01_part02(&string);
+    let vec: Vec<i32> = string
+        .split_whitespace()
+        .map(|s| s.parse::<i32>().unwrap())
+        .collect();
+
+    day01_part01(&vec);
+    day01_part02(&vec);
 }
