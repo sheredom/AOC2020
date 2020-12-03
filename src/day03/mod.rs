@@ -40,6 +40,7 @@ pub fn run() {
     let string = String::from_utf8(input.to_vec()).unwrap();
 
     let num_bits = string.lines().map(|s| s.len()).max().unwrap();
+    assert!(num_bits < 32);
 
     let mut vec = Vec::new();
 
