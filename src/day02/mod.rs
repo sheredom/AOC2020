@@ -37,7 +37,7 @@ fn day02_part02(slice: &[(i32, i32, &str, &str)]) {
     println!("Day 02, part 02: Valid passwords {}", total);
 }
 
-pub fn day02() {
+pub fn run() {
     let input = include_bytes!("input");
     let string = String::from_utf8(input.to_vec()).unwrap();
 

@@ -70,7 +70,7 @@ fn day01_part02(slice: &[i32]) {
     }
 }
 
-pub fn day01() {
+pub fn run() {
     let input = include_bytes!("input");
     let string = String::from_utf8(input.to_vec()).unwrap();
 
