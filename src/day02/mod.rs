@@ -14,7 +14,7 @@ fn day02_part01(slice: &[(i32, i32, &str, &str)]) {
         }
     }
 
-    println!("Day 02, part 01: Valid passwords {}", total);
+    red_ln!("Day 02, part 01: Valid passwords {}", total);
 }
 
 #[exec_time]
@@ -34,7 +34,7 @@ fn day02_part02(slice: &[(i32, i32, &str, &str)]) {
         total += 1;
     }
 
-    println!("Day 02, part 02: Valid passwords {}", total);
+    green_ln!("Day 02, part 02: Valid passwords {}", total);
 }
 
 pub fn run() {

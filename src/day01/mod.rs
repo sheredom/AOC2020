@@ -13,7 +13,7 @@ fn day01_part01(slice: &[i32]) {
             }
 
             if (i + k) == 2020 {
-                println!(
+                red_ln!(
                     "Day 01, part 01: At indices ({}, {}) with values ({}, {}) found the answer: {}",
                     index,
                     kndex,
@@ -53,7 +53,7 @@ fn day01_part02(slice: &[i32]) {
                 }
 
                 if (i + k + m) == 2020 {
-                    println!(
+                    green_ln!(
                     "Day 01, part 01: At indices ({}, {}, {}) with values ({}, {}, {}) found the answer: {}",
                     index,
                     kndex,

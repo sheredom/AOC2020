@@ -1,5 +1,7 @@
 extern crate bit_set;
 #[macro_use]
+extern crate colour;
+#[macro_use]
 extern crate exec_time;
 extern crate intbits;
 

@@ -20,7 +20,7 @@ fn slope_calculate(slice: &[i32], num_bits: i32, x_slope: i32, y_slope: i32) -> 
 fn day03_part01(slice: &[i32], num_bits: i32) {
     let total = slope_calculate(slice, num_bits, 3, 1);
 
-    println!("Day 03, part 01: Number of trees {}", total);
+    red_ln!("Day 03, part 01: Number of trees {}", total);
 }
 
 #[exec_time]
@@ -32,7 +32,7 @@ fn day03_part02(slice: &[i32], num_bits: i32) {
     total *= slope_calculate(slice, num_bits, 7, 1);
     total *= slope_calculate(slice, num_bits, 1, 2);
 
-    println!("Day 03, part 02: Number of trees {}", total);
+    green_ln!("Day 03, part 02: Number of trees {}", total);
 }
 
 pub fn run() {

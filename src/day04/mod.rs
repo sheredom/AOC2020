@@ -36,7 +36,7 @@ fn day04_part01(string: &str) {
         valid += 1;
     }
 
-    println!("Day 04, part 01: Valid passports {}", valid);
+    red_ln!("Day 04, part 01: Valid passports {}", valid);
 }
 
 fn is_valid_map(map: &mut HashMap<&str, &str>) -> bool {
@@ -176,7 +176,7 @@ fn day04_part02(string: &str) {
         valid += 1;
     }
 
-    println!("Day 04, part 02: Valid passports {}", valid);
+    green_ln!("Day 04, part 02: Valid passports {}", valid);
 }
 
 pub fn run() {

@@ -46,7 +46,7 @@ fn day05_part01(string: &str) {
         }
     }
 
-    println!("Day 05, part 01: Highest seat id {}", highest_seat_id);
+    red_ln!("Day 05, part 01: Highest seat id {}", highest_seat_id);
 }
 
 #[exec_time]
@@ -70,7 +70,7 @@ fn day05_part02(string: &str) {
         }
     }
 
-    println!("Day 05, part 02: My seat id {}", my_seat_id);
+    green_ln!("Day 05, part 02: My seat id {}", my_seat_id);
 }
 
 pub fn run() {
