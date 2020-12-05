@@ -16,7 +16,7 @@ fn day04_part01(string: &str) {
 
     for line in string.lines() {
         // IF we have an empty line we reset our counts.
-        if line.len() == 0 {
+        if line.is_empty() {
             if is_valid_set(&mut set) {
                 valid += 1;
             }
@@ -32,8 +32,6 @@ fn day04_part01(string: &str) {
     }
 
     // One last check for the end of the file.
-    set.remove("cid");
-
     if is_valid_set(&mut set) {
         valid += 1;
     }
@@ -112,7 +110,7 @@ fn is_valid_map(map: &mut HashMap<&str, &str>) -> bool {
     let hcl = map.get("hcl").unwrap();
 
     if let Some(colour) = hcl.strip_prefix('#') {
-        if colour.len() != 6 {
+        if colour.is_empty() {
             return false;
         }
 
@@ -157,7 +155,7 @@ fn day04_part02(string: &str) {
 
     for line in string.lines() {
         // IF we have an empty line we reset our counts.
-        if line.len() == 0 {
+        if line.is_empty() {
             if is_valid_map(&mut map) {
                 valid += 1;
             }
