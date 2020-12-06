@@ -63,7 +63,7 @@ fn day05_part02(string: &str) {
 
     let mut my_seat_id = 0;
 
-    for i in 1..999 {
+    for i in 1..(seats.len() - 1) {
         if !seats.contains(i) && seats.contains(i - 1) && seats.contains(i + 1) {
             my_seat_id = i;
             break;
