@@ -4,6 +4,7 @@ extern crate colour;
 #[macro_use]
 extern crate exec_time;
 extern crate intbits;
+extern crate itertools;
 
 mod day01;
 mod day02;
@@ -11,6 +12,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
 
 fn main() {
     day01::run();
@@ -19,4 +21,5 @@ fn main() {
     day04::run();
     day05::run();
     day06::run();
+    day07::run();
 }
