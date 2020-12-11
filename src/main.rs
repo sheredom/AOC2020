@@ -1,4 +1,5 @@
 extern crate bit_set;
+extern crate bytecount;
 #[macro_use]
 extern crate colour;
 #[macro_use]

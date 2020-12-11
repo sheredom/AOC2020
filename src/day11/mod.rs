@@ -1,4 +1,4 @@
-fn count_occupied_seats_part01(grid: &[(usize, u8)], width: usize, index: usize) -> usize {
+fn count_occupied_seats_part01(grid: &[Types], width: usize, index: usize) -> usize {
     let indices = vec![
         index - width - 1,
         index - width,
@@ -10,46 +10,47 @@ fn count_occupied_seats_part01(grid: &[(usize, u8)], width: usize, index: usize)
         index + width + 1,
     ];
 
-    indices.iter().filter(|i| grid[**i].1 == b'#').count()
+    indices
+        .iter()
+        .filter(|i| grid[**i] == Types::Occupied)
+        .count()
 }
 
 #[exec_time]
-fn day11_part01(g: &[u8], width: usize) {
-    let mut grid: Vec<(usize, u8)> = g.iter().copied().enumerate().collect();
-    let mut next = grid.clone();
+fn day11_part01(g: &[Types], width: usize) {
+    let mut grid = g.to_vec();
+    let mut pending = Vec::new();
 
     loop {
-        for (index, c) in grid.iter() {
-            next[*index] = (*index, *c);
-
+        for (index, c) in grid.iter().enumerate() {
             match c {
-                _ if *c == b'L' => {
-                    if count_occupied_seats_part01(&grid, width, *index) == 0 {
-                        next[*index] = (*index, b'#');
-                    }
+                Types::Empty if count_occupied_seats_part01(&grid, width, index) == 0 => {
+                    pending.push((index, Types::Occupied));
                 }
-                _ if *c == b'#' => {
-                    if count_occupied_seats_part01(&grid, width, *index) >= 4 {
-                        next[*index] = (*index, b'L');
-                    }
+                Types::Occupied if count_occupied_seats_part01(&grid, width, index) >= 4 => {
+                    pending.push((index, Types::Empty));
                 }
                 _ => (),
             }
         }
 
-        if next == grid {
+        if pending.is_empty() {
             break;
         }
 
-        std::mem::swap(&mut next, &mut grid);
+        for p in &pending {
+            grid[p.0] = p.1;
+        }
+
+        pending.clear();
     }
 
-    let result = grid.iter().filter(|(_, c)| *c == b'#').count();
+    let result = grid.iter().filter(|t| **t == Types::Occupied).count();
 
     red_ln!("Day 11, part 01: Stable occupied seats {}", result);
 }
 
-fn count_occupied_seats_part02(grid: &[(usize, u8)], w: usize, index: usize) -> usize {
+fn count_occupied_seats_part02(grid: &[Types], w: usize, index: usize) -> usize {
     let width = w as isize;
 
     let offsets = vec![
@@ -68,17 +69,11 @@ fn count_occupied_seats_part02(grid: &[(usize, u8)], w: usize, index: usize) -> 
     for offset in offsets {
         let mut cur = (index as isize) + offset;
         total += loop {
-            let x = cur % width;
-            let y = cur / width;
-
-            if (x == 0) || (y == 0) || (x == (width - 1)) || (cur as usize) > grid.len() {
-                break 0;
-            }
-
-            match grid[cur as usize].1 {
-              b'#' => break 1,
-              b'L' => break 0,
-              _ => ()
+            match grid[cur as usize] {
+                Types::Occupied => break 1,
+                Types::Empty => break 0,
+                Types::Boundary => break 0,
+                _ => (),
             }
 
             cur += offset;
@@ -89,39 +84,45 @@ fn count_occupied_seats_part02(grid: &[(usize, u8)], w: usize, index: usize) -> 
 }
 
 #[exec_time]
-fn day11_part02(g: &[u8], width: usize) {
-    let mut grid: Vec<(usize, u8)> = g.iter().copied().enumerate().collect();
-    let mut next = grid.clone();
+fn day11_part02(g: &[Types], width: usize) {
+    let mut grid = g.to_vec();
+    let mut pending = Vec::new();
 
     loop {
-        for (index, c) in grid.iter() {
-            next[*index] = (*index, *c);
-
+        for (index, c) in grid.iter().enumerate() {
             match c {
-                _ if *c == b'L' => {
-                    if count_occupied_seats_part02(&grid, width, *index) == 0 {
-                        next[*index] = (*index, b'#');
-                    }
+                Types::Empty if count_occupied_seats_part02(&grid, width, index) == 0 => {
+                    pending.push((index, Types::Occupied));
                 }
-                _ if *c == b'#' => {
-                    if count_occupied_seats_part02(&grid, width, *index) >= 5 {
-                        next[*index] = (*index, b'L');
-                    }
+                Types::Occupied if count_occupied_seats_part02(&grid, width, index) >= 5 => {
+                    pending.push((index, Types::Empty));
                 }
                 _ => (),
             }
         }
 
-        if next == grid {
+        if pending.is_empty() {
             break;
         }
 
-        std::mem::swap(&mut next, &mut grid);
+        for p in &pending {
+            grid[p.0] = p.1;
+        }
+
+        pending.clear();
     }
 
-    let result = grid.iter().filter(|(_, c)| *c == b'#').count();
+    let result = grid.iter().filter(|t| **t == Types::Occupied).count();
 
     green_ln!("Day 11, part 02: Stable occupied seats {}", result);
+}
+
+#[derive(Clone, Copy, Eq, PartialEq)]
+enum Types {
+    Nothing = 0,
+    Boundary = 1,
+    Empty = 2,
+    Occupied = 3,
 }
 
 pub fn run() {
@@ -129,31 +130,38 @@ pub fn run() {
     let string = String::from_utf8(input.to_vec()).unwrap();
 
     let mut width = None;
-    let mut grid: String = String::new();
-    let mut empty: String = String::new();
+    let mut vec = Vec::new();
+
     for line in string.lines() {
         if let Some(w) = width {
             assert_eq!(w, line.len() + 2);
+        } else {
+            width = Some(line.len() + 2);
+
+            for _ in 0..width.unwrap() {
+                vec.push(Types::Boundary);
+            }
         }
 
-        width = Some(line.len() + 2);
+        // Start with a boundary.
+        vec.push(Types::Boundary);
 
-        // add an empty row at the start too.
-        if grid.is_empty() {
-            empty.push('.');
-            empty = empty.repeat(width.unwrap());
-            grid.push_str(&empty);
-        }
+        line.chars().for_each(|c| match c {
+            '.' => vec.push(Types::Nothing),
+            'L' => vec.push(Types::Empty),
+            '#' => vec.push(Types::Occupied),
+            _ => panic!("Unknown char types"),
+        });
 
-        // Add an empty seat around the perimeter.
-        grid.push('.');
-        grid.push_str(line);
-        grid.push('.');
+        // End with a boundary.
+        vec.push(Types::Boundary);
     }
 
     // Add an empty row at the end also.
-    grid.push_str(&empty);
+    for _ in 0..width.unwrap() {
+        vec.push(Types::Boundary);
+    }
 
-    day11_part01(grid.as_bytes(), width.unwrap());
-    day11_part02(grid.as_bytes(), width.unwrap());
+    day11_part01(&vec, width.unwrap());
+    day11_part02(&vec, width.unwrap());
 }
