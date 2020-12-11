@@ -13,7 +13,7 @@ fn differer(mut acc: (i32, i32, i32), x: &i32) -> (i32, i32, i32) {
 }
 
 #[exec_time]
-fn day10_part01(vec: &Vec<i32>) {
+fn day10_part01(vec: &[i32]) {
     let (_, aon, tri) = vec.iter().fold((0, 0, 1), differer);
 
     let result = aon * tri;
@@ -54,7 +54,7 @@ fn combos(i: i32, slice: &[i32], cached: &mut HashMap<i32, i64>) -> i64 {
 }
 
 #[exec_time]
-fn day10_part02(vec: &Vec<i32>) {
+fn day10_part02(vec: &[i32]) {
     let mut cached = HashMap::new();
     let result = combos(0, &vec, &mut cached);
 
@@ -66,7 +66,7 @@ pub fn run() {
     let string = String::from_utf8(input.to_vec()).unwrap();
 
     let mut vec: Vec<i32> = string.lines().map(|s| s.parse::<i32>().unwrap()).collect();
-    vec.sort();
+    vec.sort_unstable();
 
     day10_part01(&vec);
     day10_part02(&vec);
