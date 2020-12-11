@@ -1,39 +1,35 @@
-fn count_occupied_seats(grid: &[u8], width: usize, index: usize) -> usize {
-    let bytes = grid.iter().enumerate();
-
-    bytes
-        .filter(|(kndex, c)| match kndex {
-            _ if *kndex == (index - width - 1) => **c == '#' as u8,
-            _ if *kndex == (index - width + 0) => **c == '#' as u8,
-            _ if *kndex == (index - width + 1) => **c == '#' as u8,
-            _ if *kndex == (index - 1) => **c == '#' as u8,
-            _ if *kndex == (index + 1) => **c == '#' as u8,
-            _ if *kndex == (index + width - 1) => **c == '#' as u8,
-            _ if *kndex == (index + width + 0) => **c == '#' as u8,
-            _ if *kndex == (index + width + 1) => **c == '#' as u8,
-            _ => false,
-        })
-        .count()
+fn count_occupied_seats(grid: &[(usize, u8)], width: usize, index: usize) -> usize {
+    let indices = vec![
+            (index - width - 1),
+            (index - width + 0),
+            (index - width + 1),
+            (index - 1),
+            (index + 1),
+            (index + width - 1),
+            (index + width + 0),
+            (index + width + 1)];
+    
+    indices.iter().filter(|i| grid[**i].1 == '#' as u8).count()
 }
 
 #[exec_time]
 fn day11_part01(g: &[u8], width: usize) {
-    let mut grid: Vec<u8> = g.iter().map(|x| *x).collect();
+    let mut grid: Vec<(usize, u8)> = g.iter().map(|x| *x).enumerate().collect();
     let mut next = grid.clone();
 
     loop {
-        for (index, c) in grid.iter().enumerate() {
-            next[index] = *c;
+        for (index, c) in grid.iter() {
+            next[*index] = (*index, *c);
 
             match c {
                 _ if *c == 'L' as u8 => {
-                    if count_occupied_seats(&grid, width, index) == 0 {
-                        next[index] = '#' as u8;
+                    if count_occupied_seats(&grid, width, *index) == 0 {
+                        next[*index] = (*index, '#' as u8);
                     }
                 }
                 _ if *c == '#' as u8 => {
-                    if count_occupied_seats(&grid, width, index) >= 4 {
-                        next[index] = 'L' as u8;
+                    if count_occupied_seats(&grid, width, *index) >= 4 {
+                        next[*index] = (*index, 'L' as u8);
                     }
                 }
                 _ => (),
@@ -47,7 +43,7 @@ fn day11_part01(g: &[u8], width: usize) {
         std::mem::swap(&mut next, &mut grid);
     }
 
-    let result = grid.iter().filter(|c| **c == '#' as u8).count();
+    let result = grid.iter().filter(|(_, c)| *c == '#' as u8).count();
 
     red_ln!("Day 11, part 01: Stable occupied seats {}", result);
 }
