@@ -1,6 +1,5 @@
 use itertools::Itertools;
-use primes::is_prime;
-use ring_algorithm::chinese_remainder_theorem;
+use num_integer::lcm;
 
 fn nextafter(timestamp: u64, bus: u64) -> u64 {
     (timestamp / bus) * (bus) + bus
@@ -32,19 +31,21 @@ fn day13_part01(timestamp: u64, buses: &[u64]) {
 }
 
 #[exec_time]
-fn day13_part02(buses: &[(i64, i64)]) {
-    let (offsets, ids): (Vec<_>, Vec<_>) = buses.iter().cloned().unzip();
+fn day13_part02(buses: &[(u64, u64)]) {
+    let mut timestamp = 0;
+    let mut step = 1;
 
-    // This feels like total cheating - but I looked at the data set and the
-    // buses always have prime ids, so we can use the CRT to work out the
-    // result efficiently.
-    assert!(ids.iter().all(|id| is_prime(*id as u64)));
+    for bus in buses {
+        while (timestamp + bus.0) % bus.1 != 0 {
+            timestamp += step;
+        }
 
-    let result = chinese_remainder_theorem(&offsets, &ids).unwrap().abs();
+        step = lcm(step, bus.1);
+    }
 
     green_ln!(
         "Day 13, part 02: Earliest timestamp that matches mapping {}",
-        result
+        timestamp
     );
 }
 
@@ -63,11 +64,11 @@ pub fn run() {
 
     day13_part01(timestamp, &buses_part01);
 
-    let buses_part02: Vec<(i64, i64)> = buses
+    let buses_part02: Vec<(_, _)> = buses
         .split(',')
         .enumerate()
         .filter(|(_, bus)| *bus != "x")
-        .map(|(index, bus)| (index as i64, bus.parse::<i64>().unwrap()))
+        .map(|(index, bus)| (index as _, bus.parse::<_>().unwrap()))
         .collect();
 
     day13_part02(&buses_part02);

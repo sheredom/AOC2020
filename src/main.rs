@@ -6,8 +6,7 @@ extern crate colour;
 extern crate exec_time;
 extern crate intbits;
 extern crate itertools;
-extern crate primes;
-extern crate ring_algorithm;
+extern crate num_integer;
 
 mod day01;
 mod day02;
