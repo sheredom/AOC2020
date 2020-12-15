@@ -1,26 +1,32 @@
-use std::collections::HashMap;
-
 fn calc_for_nth(vec: &[u32], n: u32) -> u32 {
-    let mut map = HashMap::new();
+    let mut lasts = Vec::new();
 
-    vec.iter().enumerate().for_each(|(index, number)| {
-        map.insert(*number, index as u32);
+    vec.iter().enumerate().for_each(|(index, number_u32)| {
+        let number = *number_u32 as usize;
+        if number >= lasts.len() {
+            lasts.resize(number + 1, None);
+        }
+
+        lasts[number] = Some(index as u32);
     });
 
     let mut last = 0;
 
     for i in (vec.len() as u32)..(n - 1) {
-        last = if let Some(value) = map.get_mut(&last) {
-            let old = *value;
-            *value = i;
-            i - old
+        if last >= lasts.len() {
+            lasts.resize(last + 1, None);
+        }
+
+        last = if let Some(old) = lasts[last] {
+            lasts[last] = Some(i);
+            (i - old) as usize
         } else {
-            map.insert(last, i);
+            lasts[last] = Some(i);
             0
         };
     }
 
-    last
+    last as u32
 }
 
 #[exec_time]
