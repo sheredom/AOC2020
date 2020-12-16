@@ -33,7 +33,7 @@ fn calc_for_nth(vec: &[u32], n: u32) -> u32 {
 fn day15_part01(vec: &[u32]) {
     let result = calc_for_nth(vec, 2020);
 
-    green_ln!(
+    red_ln!(
         "Day 15, part 01: 2020th number spoken in memory game is {} ",
         result
     );
