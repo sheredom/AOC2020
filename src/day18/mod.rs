@@ -1,4 +1,5 @@
-// Follow Nathan Reed's explanation of the Shunting Yard algorithm http://reedbeta.com/blog/the-shunting-yard-algorithm/
+// Follow Nathan Reed's explanation of the Shunting Yard algorithm
+// http://reedbeta.com/blog/the-shunting-yard-algorithm/
 fn shunting_yard(mut expression: &str, is_add_higher_precedence: bool) -> i64 {
     let mut operand_stack = Vec::new();
     let mut operator_stack = Vec::new();
@@ -29,9 +30,6 @@ fn shunting_yard(mut expression: &str, is_add_higher_precedence: bool) -> i64 {
             // operator stack here either if a) we don't have add having a higher precedence, or
             // b) the operator is a multiply and thus we should flush the stack.
             if !is_add_higher_precedence || new_operator == '*' {
-                // Because we want to process left to right, we assume any operator on the stack
-                // has a higher precedence than any new one (so that we process the left before
-                // the right!).
                 while let Some(operator) = operator_stack.pop() {
                     if operator == '(' {
                         // We don't want to remove any parenthesis here!
