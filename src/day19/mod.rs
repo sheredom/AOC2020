@@ -53,7 +53,7 @@ fn matches<'a>(rules: &[Rule], input: &'a str, next: usize) -> Vec<&'a str> {
 fn contains<'a>(rules: &[Rule], input: &'a str) -> bool {
     matches(rules, input, 0)
         .iter()
-        .filter(|item| item.len() == 0)
+        .filter(|item| item.is_empty())
         .count()
         != 0
 }

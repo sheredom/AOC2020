@@ -1,3 +1,4 @@
+extern crate bit_reverse;
 extern crate bit_set;
 extern crate bytecount;
 #[macro_use]
@@ -27,6 +28,7 @@ mod day16;
 mod day17;
 mod day18;
 mod day19;
+mod day20;
 
 fn main() {
     day01::run();
@@ -48,4 +50,5 @@ fn main() {
     day17::run();
     day18::run();
     day19::run();
+    day20::run();
 }
