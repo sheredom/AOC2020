@@ -7,7 +7,13 @@ fn day21_part01<'a>(string: &'a str) {
     let mut player1 = VecDeque::new();
     let mut player2 = VecDeque::new();
 
-    let (deck1, deck2) = string.strip_prefix("Player 1:").unwrap().trim_start().splitn(2, "Player 2:").next_tuple().unwrap();
+    let (deck1, deck2) = string
+        .strip_prefix("Player 1:")
+        .unwrap()
+        .trim_start()
+        .splitn(2, "Player 2:")
+        .next_tuple()
+        .unwrap();
 
     for card in deck1.lines() {
         if card.is_empty() {
@@ -48,13 +54,13 @@ fn day21_part01<'a>(string: &'a str) {
         total += score * winning_player.pop_back().unwrap();
     }
 
-    red_ln!(
-        "Day 21, part 01: Winning score {}",
-        total
-    );
+    red_ln!("Day 21, part 01: Winning score {}", total);
 }
 
-fn does_player1_win_recursive_game(player1: &mut VecDeque<usize>, player2: &mut VecDeque<usize>, depth: u32) -> bool {
+fn does_player1_win_recursive_game(
+    player1: &mut VecDeque<usize>,
+    player2: &mut VecDeque<usize>,
+) -> bool {
     let mut been_here_before = HashSet::new();
 
     while !(player1.is_empty() || player2.is_empty()) {
@@ -63,16 +69,16 @@ fn does_player1_win_recursive_game(player1: &mut VecDeque<usize>, player2: &mut 
 
         let player1_wins = if (card1 <= player1.len()) && (card2 <= player2.len()) {
             let mut clone1 = VecDeque::new();
-            for i in 0..card1 {
-                clone1.push_back(player1[i]);
+            for item in player1.iter().take(card1) {
+                clone1.push_back(*item);
             }
 
             let mut clone2 = VecDeque::new();
-            for i in 0..card2 {
-                clone2.push_back(player2[i]);
+            for item in player2.iter().take(card2) {
+                clone2.push_back(*item);
             }
 
-            does_player1_win_recursive_game(&mut clone1, &mut clone2, depth + 1)
+            does_player1_win_recursive_game(&mut clone1, &mut clone2)
         } else {
             card1 > card2
         };
@@ -87,10 +93,10 @@ fn does_player1_win_recursive_game(player1: &mut VecDeque<usize>, player2: &mut 
             player2.push_back(card1);
         }
 
-    let mut hasher = DefaultHasher::new();
-    player1.hash(&mut hasher);
-    player2.hash(&mut hasher);
-    let hash = hasher.finish();
+        let mut hasher = DefaultHasher::new();
+        player1.hash(&mut hasher);
+        player2.hash(&mut hasher);
+        let hash = hasher.finish();
 
         // Player 1 wins (we're in infinite recursion otherwise...!)
         if been_here_before.contains(&hash) {
@@ -108,7 +114,13 @@ fn day21_part02(string: &str) {
     let mut player1 = VecDeque::new();
     let mut player2 = VecDeque::new();
 
-    let (deck1, deck2) = string.strip_prefix("Player 1:").unwrap().trim_start().splitn(2, "Player 2:").next_tuple().unwrap();
+    let (deck1, deck2) = string
+        .strip_prefix("Player 1:")
+        .unwrap()
+        .trim_start()
+        .splitn(2, "Player 2:")
+        .next_tuple()
+        .unwrap();
 
     for card in deck1.lines() {
         if card.is_empty() {
@@ -124,7 +136,11 @@ fn day21_part02(string: &str) {
         player2.push_back(card.parse::<usize>().unwrap());
     }
 
-    let mut winning_player = if does_player1_win_recursive_game(&mut player1, &mut player2, 1) { player1 } else {player2};
+    let mut winning_player = if does_player1_win_recursive_game(&mut player1, &mut player2) {
+        player1
+    } else {
+        player2
+    };
 
     let mut total = 0;
 

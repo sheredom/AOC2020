@@ -22,7 +22,7 @@ fn day21_part01<'a>(string: &'a str) -> HashMap<&'a str, Vec<&'a str>> {
                 let mut to_keep = Vec::new();
 
                 for value in values.iter() {
-                    if ingredients.iter().position(|x| *x == *value).is_some() {
+                    if ingredients.iter().any(|x| *x == *value) {
                         to_keep.push(*value);
                     }
                 }
@@ -46,7 +46,7 @@ fn day21_part01<'a>(string: &'a str) -> HashMap<&'a str, Vec<&'a str>> {
             let mut found = false;
 
             for (_, values) in map.iter() {
-                if values.iter().find(|value| **value == ingredient).is_some() {
+                if values.iter().any(|value| *value == ingredient) {
                     found = true;
                 }
             }
@@ -73,10 +73,13 @@ fn day21_part02(original: HashMap<&str, Vec<&str>>) {
     // we end up with a 1:1 mapping.
     let mut map = original;
 
-    let mut to_process: HashSet<_> = map.keys().map(|key| *key).collect();
+    let mut to_process: HashSet<_> = map.keys().copied().collect();
 
     while !to_process.is_empty() {
-        if let Some(next) = to_process.iter().filter(|key| map.get(*key).unwrap().len() == 1).next() {
+        if let Some(next) = to_process
+            .iter()
+            .find(|key| map.get(*key).unwrap().len() == 1)
+        {
             let next = *next;
             to_process.remove(next);
             let ingredient = map.get(next).unwrap()[0];
@@ -96,8 +99,8 @@ fn day21_part02(original: HashMap<&str, Vec<&str>>) {
         }
     }
 
-    let mut sorted_keys: Vec<_> = map.keys().map(|key| *key).collect();
-    sorted_keys.sort();
+    let mut sorted_keys: Vec<_> = map.keys().copied().collect();
+    sorted_keys.sort_unstable();
 
     let mut dangerous_ingredients = String::new();
     for key in sorted_keys {
@@ -107,7 +110,10 @@ fn day21_part02(original: HashMap<&str, Vec<&str>>) {
 
     let dangerous_ingredients = dangerous_ingredients.strip_suffix(',').unwrap();
 
-    green_ln!("Day 21, part 02: Dangerous ingredients '{}'", dangerous_ingredients);
+    green_ln!(
+        "Day 21, part 02: Dangerous ingredients '{}'",
+        dangerous_ingredients
+    );
 }
 
 pub fn run() {
