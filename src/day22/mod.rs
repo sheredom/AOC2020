@@ -38,7 +38,7 @@ fn day21_part01<'a>(string: &'a str) {
             player1.push_back(card1);
             player1.push_back(card2);
         } else {
-            // Plauer 2 wins.
+            // Player 2 wins.
             player2.push_back(card2);
             player2.push_back(card1);
         }
@@ -88,7 +88,7 @@ fn does_player1_win_recursive_game(
             player1.push_back(card1);
             player1.push_back(card2);
         } else {
-            // Plauer 2 wins.
+            // Player 2 wins.
             player2.push_back(card2);
             player2.push_back(card1);
         }
@@ -99,10 +99,8 @@ fn does_player1_win_recursive_game(
         let hash = hasher.finish();
 
         // Player 1 wins (we're in infinite recursion otherwise...!)
-        if been_here_before.contains(&hash) {
+        if !been_here_before.insert(hash) {
             return true;
-        } else {
-            been_here_before.insert(hash);
         }
     }
 
