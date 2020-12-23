@@ -54,7 +54,7 @@ fn day21_part01<'a>(string: &'a str) {
         total += score * winning_player.pop_back().unwrap();
     }
 
-    red_ln!("Day 21, part 01: Winning score {}", total);
+    red_ln!("Day 22, part 01: Winning score {}", total);
 }
 
 fn does_player1_win_recursive_game(
@@ -148,7 +148,7 @@ fn day21_part02(string: &str) {
         total += score * winning_player.pop_back().unwrap();
     }
 
-    green_ln!("Day 21, part 02: Winning score {}", total);
+    green_ln!("Day 22, part 02: Winning score {}", total);
 }
 
 pub fn run() {
