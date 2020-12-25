@@ -3,7 +3,7 @@ use std::collections::{hash_map::DefaultHasher, HashSet, VecDeque};
 use std::hash::{Hash, Hasher};
 
 #[exec_time]
-fn day21_part01<'a>(string: &'a str) {
+fn day22_part01<'a>(string: &'a str) {
     let mut player1 = VecDeque::new();
     let mut player2 = VecDeque::new();
 
@@ -108,7 +108,7 @@ fn does_player1_win_recursive_game(
 }
 
 #[exec_time]
-fn day21_part02(string: &str) {
+fn day22_part02(string: &str) {
     let mut player1 = VecDeque::new();
     let mut player2 = VecDeque::new();
 
@@ -155,6 +155,6 @@ pub fn run() {
     let input = include_bytes!("input");
     let string = String::from_utf8(input.to_vec()).unwrap();
 
-    day21_part01(&string);
-    day21_part02(&string);
+    day22_part01(&string);
+    day22_part02(&string);
 }

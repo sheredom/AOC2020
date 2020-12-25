@@ -1,5 +1,5 @@
 #[exec_time]
-fn day21_part01(original: Vec<u8>, start: u8) {
+fn day23_part01(original: Vec<u8>, start: u8) {
     let mut cups = original;
     let cups_len = cups.len();
 
@@ -48,7 +48,7 @@ fn day21_part01(original: Vec<u8>, start: u8) {
 }
 
 #[exec_time]
-fn day21_part02(original: Vec<u32>, start: u32) {
+fn day23_part02(original: Vec<u32>, start: u32) {
     let mut cups = original;
     let cups_len = cups.len();
 
@@ -114,7 +114,7 @@ pub fn run() {
 
     vec[last as usize] = start;
 
-    day21_part01(vec, start);
+    day23_part01(vec, start);
 
     let mut vec = Vec::with_capacity(1000000 + 1);
     vec.resize(1000000 + 1, std::u32::MAX);
@@ -137,5 +137,5 @@ pub fn run() {
 
     vec[1000000] = start;
 
-    day21_part02(vec, start);
+    day23_part02(vec, start);
 }

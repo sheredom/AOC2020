@@ -1,7 +1,7 @@
 use bit_set::BitSet;
 
 #[exec_time]
-fn day21_part01(string: String) -> (BitSet, usize) {
+fn day24_part01(string: String) -> (BitSet, usize) {
     // This is just an arbitrary number that happened to work. I couldn't be bothered to work out a better number.
     let max_line_len = 150;
 
@@ -58,7 +58,7 @@ fn day21_part01(string: String) -> (BitSet, usize) {
 }
 
 #[exec_time]
-fn day21_part02(original: BitSet, width: usize) {
+fn day24_part02(original: BitSet, width: usize) {
     let mut hex_grid = original;
 
     let days = 100;
@@ -122,7 +122,7 @@ pub fn run() {
     let string = String::from_utf8(input.to_vec()).unwrap();
 
     // My hex grid is https://www.redblobgames.com/grids/hexagons/
-    let (hex_grid, width) = day21_part01(string);
+    let (hex_grid, width) = day24_part01(string);
 
-    day21_part02(hex_grid, width);
+    day24_part02(hex_grid, width);
 }
